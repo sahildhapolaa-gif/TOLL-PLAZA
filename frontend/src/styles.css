@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: linear-gradient(
+    135deg,
+    #f0fdf4 0%,
+    #ecfdf5 50%,
+    #f5f5f5 100%
+  );
+  color: #111827;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Scrollbar */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+@layer components {
+
+.card {
+  @apply bg-green-50 border border-green-100 rounded-xl;
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.08),
+    0 20px 40px rgba(0,0,0,0.12);
+}
+  .btn-primary {
+    @apply bg-black text-white font-display font-semibold
+           px-5 py-2.5 rounded-lg
+           hover:bg-gray-800
+           transition-all duration-200
+           active:scale-95
+           text-sm;
+  }
+
+  .btn-ghost {
+    @apply bg-white border border-gray-300 text-gray-700
+           px-4 py-2 rounded-lg
+           hover:bg-gray-50
+           transition-all duration-200
+           text-sm;
+  }
+
+  .input-field {
+    @apply w-full bg-white border border-gray-300
+           rounded-lg px-4 py-2.5
+           text-gray-800
+           placeholder-gray-400
+           text-sm
+           focus:outline-none
+           focus:border-blue-500
+           focus:ring-2
+           focus:ring-blue-100;
+  }
+
+  .select-field {
+    @apply input-field appearance-none cursor-pointer;
+  }
+
+.status-badge {
+  @apply inline-flex items-center
+         px-2.5 py-1
+         rounded-full
+         text-xs font-semibold;
+}
+ .status-paid {
+  @apply bg-green-50 text-green-600 border border-green-200
+         rounded-full px-2.5 py-1;
+}
+
+.status-pending {
+  @apply bg-yellow-50 text-yellow-600 border border-yellow-200
+         rounded-full px-2.5 py-1;
+}
+
+.status-violation {
+  @apply bg-red-50 text-red-600 border border-red-200
+         rounded-full px-2.5 py-1;
+}
+
+.status-official {
+  @apply bg-blue-50 text-blue-600 border border-blue-200
+         rounded-full px-2.5 py-1;
+}
+
+  .table-row-hover {
+    @apply hover:bg-gray-50 transition-colors duration-150;
+  }
+}
