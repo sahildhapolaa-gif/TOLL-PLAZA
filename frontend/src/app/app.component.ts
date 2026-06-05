@@ -14,7 +14,7 @@ import { TollLog } from './models/toll-log.model';
 <header class="bg-gradient-to-r from-green-600 via-green-700 to-emerald-700 sticky top-0 z-50 shadow-2xl">
         <div class="max-w-screen-2xl mx-auto px-6 py-5 flex items-center justify-between">
           <div class="flex items-center gap-3">
- <div class="w-9 h-9 bg-black rounded-xl shadow-md flex items-center justify-center text-white font-bold text-sm font-display">
+<div class="w-9 h-9 bg-green-100 rounded-xl shadow-md flex items-center justify-center text-green-700 font-bold text-sm font-display">
   T
 </div>
             <div>

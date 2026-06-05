@@ -71,11 +71,48 @@ import { TollLog, VehicleType } from '../../models/toll-log.model';
               [class]="isOfficial ? 'left-5' : 'left-0.5'"
             ></span>
           </button>
+ 
           <div>
             <span class="text-toll-text text-sm font-body">Government / Official Vehicle</span>
             <span class="block text-toll-muted text-xs">Fee waived — $0.00</span>
           </div>
-        </div>
+        </div><div *ngIf="!isOfficial">
+  <label class="block text-toll-textDim text-xs font-display uppercase tracking-widest mb-2">
+    Entry Status
+  </label>
+
+  <div class="grid grid-cols-3 gap-3">
+    <button
+      type="button"
+      (click)="status='Paid'"
+      [class]="status==='Paid'
+        ? 'border-green-500 bg-green-50 text-green-600'
+        : 'border-toll-border'"
+      class="py-2 rounded-lg border text-sm">
+      Paid
+    </button>
+
+    <button
+      type="button"
+      (click)="status='Pending'"
+      [class]="status==='Pending'
+        ? 'border-yellow-500 bg-yellow-50 text-yellow-600'
+        : 'border-toll-border'"
+      class="py-2 rounded-lg border text-sm">
+      Pending
+    </button>
+
+    <button
+      type="button"
+      (click)="status='Violation'"
+      [class]="status==='Violation'
+        ? 'border-red-500 bg-red-50 text-red-600'
+        : 'border-toll-border'"
+      class="py-2 rounded-lg border text-sm">
+      Violation
+    </button>
+  </div>
+</div>
         <div class="bg-white rounded-lg px-4 py-3 flex items-center justify-between border border-gray-200 shadow-sm">
           <span class="text-toll-textDim text-xs font-display uppercase tracking-widest">Calculated Fee</span>
           <span class="font-display font-bold text-xl" [class]="isOfficial ? 'text-toll-blue' : 'text-toll-accent'">
@@ -110,6 +147,7 @@ export class NewEntryFormComponent {
   licensePlate = '';
   selectedType: VehicleType = 'Car';
   isOfficial = false;
+  status: 'Paid' | 'Pending' | 'Violation' = 'Paid';
   loading = signal(false);
   error = signal('');
 
@@ -138,12 +176,12 @@ export class NewEntryFormComponent {
     this.loading.set(true);
     this.error.set('');
 
-    this.tollService
-      .createLog({
-        licensePlate: plate,
-        vehicleType: this.selectedType,
-        isOfficial: this.isOfficial,
-      })
+   this.tollService.createLog({
+  licensePlate: plate,
+  vehicleType: this.selectedType,
+  isOfficial: this.isOfficial,
+  status: this.isOfficial ? 'Official' : this.status
+})
       .subscribe({
         next: (log) => {
           this.entryCreated.emit(log);

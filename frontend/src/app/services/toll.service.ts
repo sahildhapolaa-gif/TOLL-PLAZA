@@ -26,7 +26,6 @@ export class TollService {
   updateStatus(id: string, dto: UpdateStatusDto): Observable<TollLog> {
     return this.http.patch<TollLog>(`${this.apiUrl}/logs/${id}/status`, dto);
   }
-
   /** DELETE /logs/:id — remove a log entry */
   deleteLog(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/logs/${id}`);

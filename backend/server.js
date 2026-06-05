@@ -91,7 +91,7 @@ app.get('/logs', (req, res) => {
 
 // POST /logs - add a new vehicle entry
 app.post('/logs', (req, res) => {
-  const { licensePlate, vehicleType, isOfficial = false } = req.body;
+ const { licensePlate, vehicleType, isOfficial, status } = req.body;
 
   if (!licensePlate || !vehicleType) {
     return res
@@ -105,13 +105,15 @@ app.post('/logs', (req, res) => {
       .json({ error: 'vehicleType must be Car, Motorcycle, or Truck.' });
   }
 
- const newLog = {
+
+
+const newLog = {
   id: String(nextId++),
   licensePlate: licensePlate.toUpperCase().trim(),
   vehicleType,
   timestamp: new Date().toISOString(),
   tollFee: calculateFee(vehicleType, isOfficial),
- status: isOfficial ? 'Official' : 'Pending',
+  status: isOfficial ? 'Official' : (status || 'Pending'),
   isOfficial,
 };
 
@@ -143,6 +145,42 @@ if (log.isOfficial) {
 log.status = status;
 res.json(log);
 });
+
+app.put('/logs/:id', (req, res) => {
+  const { id } = req.params;
+
+  const {
+    licensePlate,
+    vehicleType,
+    status,
+    timestamp,
+    isOfficial
+  } = req.body;
+
+  const log = logs.find(l => l.id === id);
+
+  if (!log) {
+    return res.status(404).json({
+      error: 'Log entry not found.'
+    });
+  }
+
+  log.licensePlate = licensePlate.toUpperCase().trim();
+  log.vehicleType = vehicleType;
+  log.timestamp = timestamp;
+  log.isOfficial = isOfficial;
+
+  log.tollFee = calculateFee(
+    vehicleType,
+    isOfficial
+  );
+
+  log.status = isOfficial
+    ? 'Official'
+    : status;
+
+  res.json(log);
+});
 // DELETE /logs/:id - remove a log entry
 app.delete('/logs/:id', (req, res) => {
   const { id } = req.params;
@@ -161,4 +199,5 @@ app.get('/health', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-});
+  console.log(`API URL:http://localhost:3000/logs`);
+})

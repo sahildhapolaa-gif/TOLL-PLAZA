@@ -194,7 +194,7 @@ import { StatsCardComponent } from '../stats-card/stats-card.component';
 
                 <td class="px-4 py-3.5 hidden md:table-cell">
                   <span class="text-toll-textDim font-mono text-xs">
-                    {{ log.timestamp | date:'dd MMM, hh:mm:ss a' }}
+                    {{ log.timestamp | date:'dd MMM, hh:mm a' }}
                   </span>
                 </td>
 
@@ -214,20 +214,17 @@ import { StatsCardComponent } from '../stats-card/stats-card.component';
 
                 <td class="px-4 py-3.5 text-center">
                    <div class="flex items-center justify-center gap-1 opacity-1 transition-opacity duration-200">
+<div class="flex items-center justify-center gap-1">
 
   <ng-container *ngIf="!log.isOfficial">
     <button
       *ngFor="let s of statusOptions"
       (click)="updateStatus(log, s.value)"
-      [title]="'Mark as ' + s.label"
       [disabled]="log.status === s.value"
-      class="px-2 py-1 rounded text-xs transition-all duration-150 disabled:opacity-20 disabled:cursor-default"
-      [class]="s.class"
-    >
+      class="px-2 py-1 rounded text-xs transition-all duration-150 disabled:opacity-20">
       {{ s.label }}
     </button>
   </ng-container>
-
   <button
     (click)="deleteLog(log)"
     title="Delete"
@@ -236,7 +233,7 @@ import { StatsCardComponent } from '../stats-card/stats-card.component';
   <i class="fa-solid fa-trash" style="color: rgb(0, 0, 0);"></i>
   </button>
 </div>
-   
+ 
   `, 
 })
 export class DashboardComponent implements OnInit 
@@ -249,7 +246,6 @@ export class DashboardComponent implements OnInit
   searchQuery = '';
   vehicleFilter = '';
   statusFilter = '';
-
   statusOptions = [
     { value: 'Paid' as LogStatus, label: 'Paid', class: 'text-toll-green hover:bg-toll-green/10' },
     { value: 'Pending' as LogStatus, label: 'Pending', class: 'text-toll-yellow hover:bg-toll-yellow/10' },
@@ -294,10 +290,9 @@ export class DashboardComponent implements OnInit
       (l) => l.isOfficial
     ).length,
 
-    totalRevenue: all.reduce(
-      (sum, l) => sum + l.tollFee,
-      0
-    ),
+  totalRevenue: all
+  .filter(log => log.status === 'Paid')
+  .reduce((sum, log) => sum + log.tollFee, 0),
   };
 });
 
@@ -348,7 +343,6 @@ export class DashboardComponent implements OnInit
       },
     });
   }
-
   deleteLog(log: TollLog): void {
     this.tollService.deleteLog(log.id).subscribe({
       next: () => {

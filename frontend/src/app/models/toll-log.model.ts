@@ -14,9 +14,9 @@ export interface TollLog {
 export interface CreateTollLogDto {
   licensePlate: string;
   vehicleType: VehicleType;
-  isOfficial?: boolean;
+  isOfficial: boolean;
+  status?: 'Paid' | 'Pending' | 'Violation' | 'Official';
 }
-
 export interface UpdateStatusDto {
   status: LogStatus;
 }
